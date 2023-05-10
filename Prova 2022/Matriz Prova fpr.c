@@ -1,4 +1,7 @@
-
+Considerando a existência de um arquivo A contendo números inteiros positivos, um por linha, pede-se a
+implementação de uma função que crie um segundo arquivo, B, com as seguintes características:
+▪ Para cada valor de A, escrever em B uma linha com todos os seus divisores;
+▪ Para cada elemento do primeiro arquivo, apenas uma linha de divisores deve ser inserida em B.
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
