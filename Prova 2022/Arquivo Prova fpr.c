@@ -1,3 +1,9 @@
+
+Considerando a existência de uma matriz de inteiros M, de ordem N (ou seja, o nº de linhas e o nº de colunas são iguais
+a N), onde N é uma constante, desenvolver uma função que retorne 1 se a seguinte regra for atendida por M (caso
+contrário, o valor 0 deverá ser retornado):
+▪ A soma dos elementos da diagonal principal deve ser igual à soma dos elementos que estão acima desta
+diagonal, assim como à soma dos elementos abaixo da diagonal.
 #include <stdio.h>
 
 int removeLinhasArquivo(const char* nomeArquivo, int linhaInicial, int linhaFinal) {
