@@ -1,3 +1,72 @@
+
+#include <stdio.h>
+#include <string.h>
+
+//protótipos das funções
+int divisores(char nomeArq[],char nomeArq2[]);
+
+//main
+void main ()
+{
+	//declaração de variáveis
+	char nomeArqOriginal[20], nomeArqNovo[20];
+	int retorno;
+	
+	//associando o arquivo "teste.txt" à variável 'nomeArqOriginal'
+	strcpy (nomeArqOriginal, "teste.txt");
+	
+	//associando o arquivo "novo.txt" à variável 'nomeArqNovo'
+	strcpy (nomeArqNovo, "novo.txt");
+		
+	//chamando a função e armazenando o retorno na variável 'retorno'
+	retorno = divisores(nomeArqOriginal,nomeArqNovo);
+	
+	//testando o retorno
+	if (retorno == 1)
+	{
+		printf ("\nO arquivo %s foi gerado com sucesso!", nomeArqNovo);
+	}
+	else
+	{
+		printf ("\nErro na geracao do arquivo %s.", nomeArqNovo);
+	}
+}
+
+int divisores(char nomeArq[],char nomeArq2[]){
+	
+	FILE *arquivoOrig;
+	FILE *arquivoNovo;
+	int numero,i;
+	
+	arquivoOrig = fopen (nomeArq, "r");
+	
+	if (arquivoOrig == NULL)
+	{
+		return -1;	//sinalizando que não foi possível abrir o arquivo
+	}else{
+	arquivoNovo = fopen (nomeArq, "w");	
+		
+	while(fscanf(arquivoOrig,"%d",&numero != EOF)){
+		
+		fprintf(arquivoNovo,"%d",numero);
+		
+		for(i;i<=numero;i++){
+			if(numero%i ==0){
+				
+				fprintf(arquivoNovo,"%d",i);
+				
+			}
+			
+		}
+		
+		fprintf(arquivoNovo, "\n");
+	}
+		}
+	fclose(arquivoOrig);
+	fclose(arquivoNovo);
+}
+	
+
 #include <stdio.h>
 #define TAM 30
 //Dadas duas strings s1 e s2, implementar uma função
