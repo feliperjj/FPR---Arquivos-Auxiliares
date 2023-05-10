@@ -19,6 +19,12 @@ void trocar(int m[L][C], int c1, int c2) {
         m[i][c1] = m[i][c2];
         m[i][c2] = temp;
     }
+     // Inverte a ordem na coluna c1
+    for (int i = 0; i < L/2; i++) {
+        int temp = M[i][c1];
+        M[i][c1] = M[L-1-i][c1];
+        M[L-1-i][c1] = temp;
+    }
 
     printf("Colunas %d e %d trocadas com sucesso.\n", c1, c2);
 }
