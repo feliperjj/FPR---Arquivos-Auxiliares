@@ -1,0 +1,30 @@
+//implementação das funções
+void exibirAlunos (TAluno alunos[],TDisciplina vetDisciplinas[], int tamanho){
+	
+	
+	int i,j,aprovados=0,reprovados=0;
+	
+	for(i=0;i<tamanho;i++){
+		
+	if(alunos[i].av1 + alunos[i].av2 > 7.0){
+		
+		
+		alunos[i].disciplina.situacao = 'A';
+		aprovados++;
+		
+	}else{
+		alunos[i].disciplina.situacao = 'R';
+		reprovados++;
+		
+	}	
+					printf ("\n\n\  %d/%d:\n\n",alunos[i].nome);
+					printf ("\n\n\nNumero de Alunos por disciplina  %d/%d:\n\n",alunos[i].disciplina);
+					printf ("\n\n\n O codigo da disciplina  %d/%d:\n\n",alunos[i].disciplina.codigo);
+					printf ("\n\n\n A situação dos alunos  %d/%d:\n\n",alunos[i].disciplina.situacao);
+		
+	}
+	
+	
+	
+	
+}
