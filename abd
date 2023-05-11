@@ -1,3 +1,19 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char nome[50];
+    char disciplina[4];
+    float av1;
+    float av2;
+} TAluno;
+
+typedef struct {
+    char codigo[4];
+    char situacao[8];
+    int quantAlunos;
+} TDisciplina;
+
 void criarVetorDisciplinas(TAluno alunos[], TDisciplina vetDisciplinas[], int tamanho) {
     int i, j;
     
@@ -33,56 +49,6 @@ void criarVetorDisciplinas(TAluno alunos[], TDisciplina vetDisciplinas[], int ta
         }
     }
 }
-Q#include <stdio.h>
-#include <string.h>
-
-typedef struct {
-    char nome[50];
-    char disciplina[4];
-    float av1;
-    float av2;
-} TAluno;
-
-typedef struct {
-    char codigo[4];
-    char situacao[8];
-    int quantAlunos;
-} TDisciplina;
-
-TDisciplina* criarVetorDisciplinas(TAluno alunos[], int tamanho) {
-    int i;
-    TDisciplina *vetDisciplinas = malloc(tamanho * sizeof(TDisciplina));
-
-    // Initializing the vetDisciplinas array
-    for (i = 0; i < tamanho; i++) {
-        strcpy(vetDisciplinas[i].codigo, alunos[i].disciplina);
-        strcpy(vetDisciplinas[i].situacao, "");
-        vetDisciplinas[i].quantAlunos = 0;
-    }
-
-    // Determining the status and counting students for each discipline
-    for (i = 0; i < tamanho; i++) {
-        if (alunos[i].av1 + alunos[i].av2 > 7.0) {
-            strcpy(alunos[i].situacao, "aprovado");
-        } else if (alunos[i].av1 + alunos[i].av2 < 4.0) {
-            strcpy(alunos[i].situacao, "reprovado");
-        } else {
-            strcpy(alunos[i].situacao, "em AVF");
-        }
-
-        int j;
-        for (j = 0; j < tamanho; j++) {
-            if (strcmp(alunos[i].disciplina, vetDisciplinas[j].codigo) == 0) {
-                strcpy(vetDisciplinas[j].situacao, alunos[i].situacao);
-                vetDisciplinas[j].quantAlunos++;
-                break;
-            }
-        }
-    }
-
-    return vetDisciplinas;
-}
-
 void exibirDisciplinas(TDisciplina vetDisciplinas[], int tamanho) {
     int i;
 
@@ -99,120 +65,19 @@ int main() {
     TAluno vetorAlunos[10];
     int quantAlunos = 10;
 
-    // Initializing the student array
+
     inicializarAlunos(vetorAlunos, quantAlunos);
 
-    // Creating the vetDisciplinas array and populating it with data
     TDisciplina *vetDisciplinas = criarVetorDisciplinas(vetorAlunos, quantAlunos);
 
-    // Displaying the vetDisciplinas array
+    
     exibirDisciplinas(vetDisciplinas, quantAlunos);
 
-    // Freeing the allocated memory
-    free(vetDisciplinas);
+
+   
 
     return 0;
 }
-
-void inicializarAlunos(TAluno alunos[], int tamanho) {
-    // Initializing the student array with data
-    // ...
-
-    // Example data initialization
-    strcpy(alunos[0].nome, "JOAO");
-    strcpy(alunos[0].disciplina, "FAC");
-    alunos[0].av1 = 10.0;
-    alunos[0].av2 = 8.0;
-
-    // Continue initializing the remaining students
-    // ...
-}
-uestão 04 [2,5 pontos]:
-	Considerando a existência de um vetor, onde cada posição armazena 
-	os seguintes dados: nome do aluno, código da disciplina, nota na 
-	AV1 e nota na AV2, pede-se o desenvolvimento de uma função que, 
-	dado um vetor nos moldes do descrito, crie (e retorne) um outro 
-	vetor com os seguintes dados em cada posição: código da disciplina, 
-	status (Aprovado, Reprovado ou Em AVF) e a quantidade de alunos 
-	nesta situação.
-
-	Exemplo: 
-
-	JOAO	PEDRO	MARIA	ANA	CARLOS	PAULO	KATIA	SILVIA	GLORIA	ANTONIO	
-	FAC		ESD		FPR		FAC	FAC		FPR		ESD		FAC		FPR		ESD
-	10,0	6,0		10,0	8,0	7,0		5,0		5,0		2,0		4,0		3,0
-	8,0		7,0		5,0		3,0	7,0		2,0		9,0		4,0		1,0		4,0
-
-
-	FAC			ESD			FPR			FAC		FPR			FAC			ESD
-	aprovado	aprovado	aprovado	em AVF	reprovado	reprovado	reprovado
-	2			2			1			1			2		1			1
-*/
-
-//importação de bibliotecas
-#include <stdio.h>
-
-typedef struct {
-    char nome[50];
-    float av1;
-    float av2;
-    struct TDisciplina *disciplina;
-} TAluno;
-
-typedef struct {
-    int codigo;
-    char situacao;
-} TDisciplina;
-
-void exibirAlunos(TAluno alunos[], TDisciplina vetDisciplinas[], int tamanho) {
-    int i, j, aprovados = 0, reprovados = 0;
-
-    for (i = 0; i < tamanho; i++) {
-        if (alunos[i].av1 + alunos[i].av2 > 7.0) {
-            alunos[i].disciplina->situacao = 'A';
-            aprovados++;
-        } else {
-            alunos[i].disciplina->situacao = 'R';
-            reprovados++;
-        }
-
-        printf("\n\nAluno: %s\n", alunos[i].nome);
-        printf("Número de Alunos por disciplina: %d\n", alunos[i].disciplina->codigo);
-        printf("Código da disciplina: %d\n", alunos[i].disciplina->codigo);
-        printf("Situação do aluno: %c\n", alunos[i].disciplina->situacao);
-    }
-}
-
-
-
-void exibirDisciplinas(TDisciplina vetDisciplinas[], int tamanho) {
-    int i;
-
-    printf("\nDisciplinas:\n");
-
-    for (i = 0; i < tamanho; i++) {
-        printf("Código da disciplina: %d\n", vetDisciplinas[i].codigo);
-        printf("Situação da disciplina: %c\n", vetDisciplinas[i].situacao);
-    }
-}
-
-int main() {
-    TAluno vetorAlunos[10];
-    TDisciplina vetDisciplinas[10];
-    int quantDisciplinas; // Assuming there are 10 disciplines
-
-    // Initializing the student array
-    inicializarAlunos(vetorAlunos, 10);
-
-    // Calling the function and passing the filled vetDisciplinas array
-    exibirAlunos(vetorAlunos, vetDisciplinas, 10);
-
-    // Displaying the vetDisciplinas array
-    exibirDisciplinas(vetDisciplinas, quantDisciplinas);
-
-    return 0;
-}
-
 void inicializarAlunos (TAluno alunos[], int tamanho)
 {
 	//posicao 0
