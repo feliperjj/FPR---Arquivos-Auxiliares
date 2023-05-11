@@ -1,3 +1,74 @@
+#include <stdio.h>
+
+typedef struct {
+    char nome[50];
+    float av1;
+    float av2;
+    struct TDisciplina *disciplina;
+} TAluno;
+
+typedef struct {
+    int codigo;
+    char situacao;
+} TDisciplina;
+
+void exibirAlunos(TAluno alunos[], TDisciplina vetDisciplinas[], int tamanho) {
+    int i, j, aprovados = 0, reprovados = 0;
+
+    for (i = 0; i < tamanho; i++) {
+        if (alunos[i].av1 + alunos[i].av2 > 7.0) {
+            alunos[i].disciplina->situacao = 'A';
+            aprovados++;
+        } else {
+            alunos[i].disciplina->situacao = 'R';
+            reprovados++;
+        }
+
+        printf("\n\nAluno: %s\n", alunos[i].nome);
+        printf("Número de Alunos por disciplina: %d\n", alunos[i].disciplina->codigo);
+        printf("Código da disciplina: %d\n", alunos[i].disciplina->codigo);
+        printf("Situação do aluno: %c\n", alunos[i].disciplina->situacao);
+    }
+}
+
+void inicializarAlunos(TAluno alunos[], int tamanho) {
+    int i;
+
+    for (i = 0; i < tamanho; i++) {
+        strcpy(alunos[i].nome, ""); // Assuming you have a way to initialize the student's name
+        alunos[i].av1 = 0.0;
+        alunos[i].av2 = 0.0;
+        alunos[i].disciplina = NULL;
+    }
+}
+
+void exibirDisciplinas(TDisciplina vetDisciplinas[], int tamanho) {
+    int i;
+
+    printf("\nDisciplinas:\n");
+
+    for (i = 0; i < tamanho; i++) {
+        printf("Código da disciplina: %d\n", vetDisciplinas[i].codigo);
+        printf("Situação da disciplina: %c\n", vetDisciplinas[i].situacao);
+    }
+}
+
+int main() {
+    TAluno vetorAlunos[10];
+    TDisciplina vetDisciplinas[10];
+    int quantDisciplinas = 10; // Assuming there are 10 disciplines
+
+    // Initializing the student array
+    inicializarAlunos(vetorAlunos, 10);
+
+    // Calling the function and passing the filled vetDisciplinas array
+    exibirAlunos(vetorAlunos, vetDisciplinas, 10);
+
+    // Displaying the vetDisciplinas array
+    exibirDisciplinas(vetDisciplinas, quantDisciplinas);
+
+    return 0;
+}
 void main ()
 {
 	//declaração de variáveis
