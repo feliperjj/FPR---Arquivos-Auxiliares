@@ -1,3 +1,38 @@
+void criarVetorDisciplinas(TAluno alunos[], TDisciplina vetDisciplinas[], int tamanho) {
+    int i, j;
+    
+    // Inicializando o vetor de disciplinas
+    for (i = 0; i < tamanho; i++) {
+        strcpy(vetDisciplinas[i].codigo, alunos[i].disciplina);
+        strcpy(vetDisciplinas[i].situacao, "");
+        vetDisciplinas[i].quantAlunos = 0;
+    }
+
+    // Determinando o status e contando os alunos para cada disciplina
+    for (i = 0; i < tamanho; i++) {
+        if (alunos[i].av1 + alunos[i].av2 > 7.0) {
+            strcpy(alunos[i].situacao, "aprovado");
+        } else if (alunos[i].av1 + alunos[i].av2 < 4.0) {
+            strcpy(alunos[i].situacao, "reprovado");
+        } else {
+            strcpy(alunos[i].situacao, "em AVF");
+        }
+
+        for (j = 0; j < tamanho; j++) {
+            if (strcmp(alunos[i].disciplina, vetDisciplinas[j].codigo) == 0) {
+                if (strcmp(alunos[i].situacao, "aprovado") == 0) {
+                    strcpy(vetDisciplinas[j].situacao, "aprovado");
+                } else if (strcmp(alunos[i].situacao, "reprovado") == 0 && strcmp(vetDisciplinas[j].situacao, "aprovado") != 0) {
+                    strcpy(vetDisciplinas[j].situacao, "reprovado");
+                } else if (strcmp(alunos[i].situacao, "em AVF") == 0 && (strcmp(vetDisciplinas[j].situacao, "aprovado") != 0 && strcmp(vetDisciplinas[j].situacao, "reprovado") != 0)) {
+                    strcpy(vetDisciplinas[j].situacao, "em AVF");
+                }
+                vetDisciplinas[j].quantAlunos++;
+                break;
+            }
+        }
+    }
+}
 Q#include <stdio.h>
 #include <string.h>
 
