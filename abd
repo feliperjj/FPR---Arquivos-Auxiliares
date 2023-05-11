@@ -1,4 +1,98 @@
-Questão 04 [2,5 pontos]:
+Q#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char nome[50];
+    char disciplina[4];
+    float av1;
+    float av2;
+} TAluno;
+
+typedef struct {
+    char codigo[4];
+    char situacao[8];
+    int quantAlunos;
+} TDisciplina;
+
+TDisciplina* criarVetorDisciplinas(TAluno alunos[], int tamanho) {
+    int i;
+    TDisciplina *vetDisciplinas = malloc(tamanho * sizeof(TDisciplina));
+
+    // Initializing the vetDisciplinas array
+    for (i = 0; i < tamanho; i++) {
+        strcpy(vetDisciplinas[i].codigo, alunos[i].disciplina);
+        strcpy(vetDisciplinas[i].situacao, "");
+        vetDisciplinas[i].quantAlunos = 0;
+    }
+
+    // Determining the status and counting students for each discipline
+    for (i = 0; i < tamanho; i++) {
+        if (alunos[i].av1 + alunos[i].av2 > 7.0) {
+            strcpy(alunos[i].situacao, "aprovado");
+        } else if (alunos[i].av1 + alunos[i].av2 < 4.0) {
+            strcpy(alunos[i].situacao, "reprovado");
+        } else {
+            strcpy(alunos[i].situacao, "em AVF");
+        }
+
+        int j;
+        for (j = 0; j < tamanho; j++) {
+            if (strcmp(alunos[i].disciplina, vetDisciplinas[j].codigo) == 0) {
+                strcpy(vetDisciplinas[j].situacao, alunos[i].situacao);
+                vetDisciplinas[j].quantAlunos++;
+                break;
+            }
+        }
+    }
+
+    return vetDisciplinas;
+}
+
+void exibirDisciplinas(TDisciplina vetDisciplinas[], int tamanho) {
+    int i;
+
+    printf("Disciplinas:\n");
+
+    for (i = 0; i < tamanho; i++) {
+        printf("Código da disciplina: %s\n", vetDisciplinas[i].codigo);
+        printf("Situação: %s\n", vetDisciplinas[i].situacao);
+        printf("Quantidade de alunos: %d\n\n", vetDisciplinas[i].quantAlunos);
+    }
+}
+
+int main() {
+    TAluno vetorAlunos[10];
+    int quantAlunos = 10;
+
+    // Initializing the student array
+    inicializarAlunos(vetorAlunos, quantAlunos);
+
+    // Creating the vetDisciplinas array and populating it with data
+    TDisciplina *vetDisciplinas = criarVetorDisciplinas(vetorAlunos, quantAlunos);
+
+    // Displaying the vetDisciplinas array
+    exibirDisciplinas(vetDisciplinas, quantAlunos);
+
+    // Freeing the allocated memory
+    free(vetDisciplinas);
+
+    return 0;
+}
+
+void inicializarAlunos(TAluno alunos[], int tamanho) {
+    // Initializing the student array with data
+    // ...
+
+    // Example data initialization
+    strcpy(alunos[0].nome, "JOAO");
+    strcpy(alunos[0].disciplina, "FAC");
+    alunos[0].av1 = 10.0;
+    alunos[0].av2 = 8.0;
+
+    // Continue initializing the remaining students
+    // ...
+}
+uestão 04 [2,5 pontos]:
 	Considerando a existência de um vetor, onde cada posição armazena 
 	os seguintes dados: nome do aluno, código da disciplina, nota na 
 	AV1 e nota na AV2, pede-se o desenvolvimento de uma função que, 
