@@ -1,0 +1,78 @@
+/*
+	FAETERJ-Rio
+	FPR - Fundamentos de Programação - Manhã
+	Professor Leonardo Vianna
+	
+	Prova a compor a AV1 (Parte II) - 11/05/2023
+	
+	Questão 03 [2,5 pontos]:
+	Dadas duas strings s1 e s2, implementar uma função que crie duas 
+	outras strings - s3 e s4 - com as seguintes características:
+
+	- s3: conterá todos os caracteres de s1 que também estão em s2;
+	- s4: conterá todos os caracteres de s1 que não estão em s2.
+
+	Exemplo: 
+
+		s1:	"PROGRAMACAO"				
+		s2:	"ALGORITMOS"				
+
+		s3: "ROGRAMAAO" 
+		s4: "PC"
+*/
+
+//importação de bibliotecas
+#include <stdio.h>
+#include <string.h>
+
+//protótipos das funções
+void organizaString(char s1[], char s2[], char s3[],char s4[]);
+
+//main
+void main ()
+{
+	//declaração de variáveis
+	char string1[20],
+	     string2[20],
+		 string3[20],
+		 string4[20]; 
+		 
+	//inicializando as duas strings
+	strcpy (string1, "PROGRAMACAO");
+	strcpy (string2, "ALGORITMOS");
+	
+	//chamando a função e armazenando os resultados em 'string3' e 'string4'
+	organizaString(string1,string2,string3,string4);
+	
+	//exibindo as novas strings
+	printf ("\n\nstring3: %s\n", string3);
+	printf ("string4: %s\n", string4);
+}
+	
+//implementação das funções
+void organizaString(char s1[], char s2[], char s3[],char s4[]){
+	
+	
+int i, j;
+    int resultado, tamanho, tamanho2;
+    tamanho = strlen(s1);
+    tamanho2 = strlen(s2);
+
+    if (tamanho2>tamanho){
+        tamanho=tamanho2;
+    }
+
+    for (i=0;i<=tamanho;i++){
+        if ( s2[i]==s1[i] ){
+            s3[i]=s1[i];
+        } else {
+            for (j=0;j<=tamanho;j++){
+                if ((s3[j]==s2[j]) || (s3[j]==s3[i])){
+                    
+                } else {
+                    s4[i]=s1[i];
+                }
+            }
+        }
+    }
+}
