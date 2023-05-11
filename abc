@@ -1,3 +1,72 @@
+#include <stdio.h>
+#include <string.h>
+
+void organizaString(char s1[], char s2[], char s3[], char s4[]) {
+    int i, j, k;
+    int tamanho = strlen(s1);
+
+    // Inicializa as strings s3 e s4 como strings vazias
+    strcpy(s3, "");
+    strcpy(s4, "");
+
+    for (i = 0; i < tamanho; i++) {
+        int encontrado = 0;
+
+        // Verifica se o caractere s1[i] está presente em s2
+        for (j = 0; j < strlen(s2); j++) {
+            if (s1[i] == s2[j]) {
+                encontrado = 1;
+                break;
+            }
+        }
+
+        // Se o caractere estiver em s2, adiciona em s3
+        if (encontrado) {
+            char str[2];
+            str[0] = s1[i];
+            str[1] = '\0';
+            strcat(s3, str);
+        } else {
+            int repetido = 0;
+
+            // Verifica se o caractere já foi adicionado em s3 ou s4
+            for (k = 0; k < strlen(s3); k++) {
+                if (s1[i] == s3[k]) {
+                    repetido = 1;
+                    break;
+                }
+            }
+            for (k = 0; k < strlen(s4); k++) {
+                if (s1[i] == s4[k]) {
+                    repetido = 1;
+                    break;
+                }
+            }
+
+            // Se não estiver repetido, adiciona em s4
+            if (!repetido) {
+                char str[2];
+                str[0] = s1[i];
+                str[1] = '\0';
+                strcat(s4, str);
+            }
+        }
+    }
+}
+
+int main() {
+    char string1[20], string2[20], string3[20], string4[20];
+
+    strcpy(string1, "PROGRAMACAO");
+    strcpy(string2, "ALGORITMOS");
+
+    organizaString(string1, string2, string3, string4);
+
+    printf("string3: %s\n", string3);
+    printf("string4: %s\n", string4);
+
+    return 0;
+}
 /*
 	FAETERJ-Rio
 	FPR - Fundamentos de Programação - Manhã
