@@ -1,3 +1,11 @@
+
+
+
+
+//importação de bibliotecas
+#include <stdio.h>
+#include <string.h>
+
 #include <stdio.h>
 #include <string.h>
 
@@ -10,7 +18,8 @@ typedef struct {
 } TAluno;
 
 typedef struct {
-    char codigo[4];
+    char nome[10];
+	char codigo[4];
     char situacao[8];
     int quantAlunos;
 } TDisciplina;
@@ -51,89 +60,21 @@ void criarVetorDisciplinas(TAluno alunos[], TDisciplina vetDisciplinas[], int ta
     }
 }
 
-void exibirDisciplinas(TDisciplina vetDisciplinas[], int tamanho) {
-    int i;
-
-    printf("Disciplinas:\n");
-
-    for (i = 0; i < tamanho; i++) {
-        printf("Código da disciplina: %s\n", vetDisciplinas[i].codigo);
-        printf("Situação: %s\n", vetDisciplinas[i].situacao);
-        printf("Quantidade de alunos: %d\n\n", vetDisciplinas[i].quantAlunos);
-    }
-}
-
-#include <stdio.h>
-#include <string.h>
-
-typedef struct {
-    char nome[50];
-    char disciplina[4];
-    float av1;
-    float av2;
-} TAluno;
-
-typedef struct {
-    char codigo[4];
-    char situacao[8];
-    int quantAlunos;
-} TDisciplina;
-
-void criarVetorDisciplinas(TAluno alunos[], TDisciplina vetDisciplinas[], int tamanho) {
-    int i, j;
-    
-    // Inicializando o vetor de disciplinas
-    for (i = 0; i < tamanho; i++) {
-        strcpy(vetDisciplinas[i].codigo, alunos[i].disciplina);
-        strcpy(vetDisciplinas[i].situacao, "");
-        vetDisciplinas[i].quantAlunos = 0;
-    }
-
-    // Determinando o status e contando os alunos para cada disciplina
-    for (i = 0; i < tamanho; i++) {
-        if (alunos[i].av1 + alunos[i].av2 > 7.0) {
-            strcpy(alunos[i].situacao, "aprovado");
-        } else if (alunos[i].av1 + alunos[i].av2 < 4.0) {
-            strcpy(alunos[i].situacao, "reprovado");
-        } else {
-            strcpy(alunos[i].situacao, "em AVF");
-        }
-
-        for (j = 0; j < tamanho; j++) {
-            if (strcmp(alunos[i].disciplina, vetDisciplinas[j].codigo) == 0) {
-                if (strcmp(alunos[i].situacao, "aprovado") == 0) {
-                    strcpy(vetDisciplinas[j].situacao, "aprovado");
-                } else if (strcmp(alunos[i].situacao, "reprovado") == 0 && strcmp(vetDisciplinas[j].situacao, "aprovado") != 0) {
-                    strcpy(vetDisciplinas[j].situacao, "reprovado");
-                } else if (strcmp(alunos[i].situacao, "em AVF") == 0 && (strcmp(vetDisciplinas[j].situacao, "aprovado") != 0 && strcmp(vetDisciplinas[j].situacao, "reprovado") != 0)) {
-                    strcpy(vetDisciplinas[j].situacao, "em AVF");
-                }
-                vetDisciplinas[j].quantAlunos++;
-                break;
-            }
-        }
-    }
-}
-void exibirDisciplinas(TDisciplina vetDisciplinas[], int tamanho) {
-    int i;
-
-    printf("Disciplinas:\n");
-
-    for (i = 0; i < tamanho; i++) {
-        printf("Código da disciplina: %s\n", vetDisciplinas[i].codigo);
-        printf("Situação: %s\n", vetDisciplinas[i].situacao);
-        printf("Quantidade de alunos: %d\n\n", vetDisciplinas[i].quantAlunos);
-    }
-}
 
 int main() {
     TAluno vetorAlunos[10];
     int quantAlunos = 10;
+	
+	inicializarAlunos (vetorAlunos, 10);
+	
+	//chamando a função e retornando o vetor vetDisciplinas preenchido
+	
+    criarVetorDisciplinas(vetorAlunos, quantAlunos,tamanho);
+	
+	//exibindo o vetor VetDisciplinas
+	exibirDisciplinas (vetDisciplinas, quantDisciplinas);
 
-
-    inicializarAlunos(vetorAlunos, quantAlunos);
-
-    TDisciplina *vetDisciplinas = criarVetorDisciplinas(vetorAlunos, quantAlunos);
+    
 
     
     exibirDisciplinas(vetDisciplinas, quantAlunos);
@@ -141,70 +82,7 @@ int main() {
 
    
 
-    return 0;
-}
-void inicializarAlunos (TAluno alunos[], int tamanho)
-{
-	//posicao 0
-	strcpy (alunos[0].nome, "JOAO");
-	strcpy (alunos[0].disciplina, "FAC");
-	alunos[0].av1 = 10.0;
-	alunos[0].av2 = 8.0;
-	
-	//posicao 1
-	strcpy (alunos[1].nome, "PEDRO");
-	strcpy (alunos[1].disciplina, "ESD");
-	alunos[1].av1 = 6.0;
-	alunos[1].av2 = 7.0;
-	
-	//posicao 2
-	strcpy (alunos[2].nome, "MARIA");
-	strcpy (alunos[2].disciplina, "FPR");
-	alunos[2].av1 = 10.0;
-	alunos[2].av2 = 5.0;
-	
-	//posicao 3
-	strcpy (alunos[3].nome, "ANA");
-	strcpy (alunos[3].disciplina, "FAC");
-	alunos[3].av1 = 8.0;
-	alunos[3].av2 = 3.0;
-	
-	//posicao 4
-	strcpy (alunos[4].nome, "CARLOS");
-	strcpy (alunos[4].disciplina, "FAC");
-	alunos[4].av1 = 7.0;
-	alunos[4].av2 = 7.0;
-	
-	//posicao 5
-	strcpy (alunos[5].nome, "PAULO");
-	strcpy (alunos[5].disciplina, "FPR");
-	alunos[5].av1 = 5.0;
-	alunos[5].av2 = 2.0;
-	
-	//posicao 6
-	strcpy (alunos[6].nome, "KATIA");
-	strcpy (alunos[6].disciplina, "ESD");
-	alunos[6].av1 = 5.0;
-	alunos[6].av2 = 9.0;
-	
-	//posicao 7
-	strcpy (alunos[7].nome, "SILVIA");
-	strcpy (alunos[7].disciplina, "FAC");
-	alunos[7].av1 = 2.0;
-	alunos[7].av2 = 4.0;
-	
-	//posicao 8
-	strcpy (alunos[8].nome, "GLORIA");
-	strcpy (alunos[8].disciplina, "FPR");
-	alunos[8].av1 = 4.0;
-	alunos[8].av2 = 1.0;
-	
-	//posicao 9
-	strcpy (alunos[9].nome, "ANTONIO");
-	strcpy (alunos[9].disciplina, "ESD");
-	alunos[9].av1 = 3.0;
-	alunos[9].av2 = 4.0;
-}
+
 
 void exibirDisciplinas (TDisciplina vetDisciplinas[], int tamanho)
 {
