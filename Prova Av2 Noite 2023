@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+int mdc(int a, int b) {
+    if (b == 0) {
+        return a;
+    }
+    return mdc(b, a % b);
+}
+
+int contarDivisores(int n, int divisor, int contador) {
+    if (divisor > n) {
+        return contador;
+    }
+    if (n % divisor == 0) {
+        contador++;
+    }
+    return contarDivisores(n, divisor + 1, contador);
+}
+
+int contarDivisoresComuns(int n1, int n2) {
+    int divisoresComuns = contarDivisores(mdc(n1, n2), 1, 0);
+    return divisoresComuns;
+}
+
+int main() {
+    int numero1, numero2;
+    
+    printf("Digite o primeiro número: ");
+    scanf("%d", &numero1);
+
+    printf("Digite o segundo número: ");
+    scanf("%d", &numero2);
+
+    int resultado = contarDivisoresComuns(numero1, numero2);
+    printf("A quantidade de divisores em comum entre %d e %d é: %d\n", numero1, numero2, resultado);
+
+    return 0;
+}
