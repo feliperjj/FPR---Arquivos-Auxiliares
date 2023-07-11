@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No {
+    int dado;
+    struct No* prox;
+} TNo;
+
+typedef struct Lista {
+    TNo* inicio;
+} TLista;
+
+TNo* criarNo(int valor) {
+    TNo* novoNo = (TNo*)malloc(sizeof(TNo));
+    novoNo->dado = valor;
+    novoNo->prox = NULL;
+    return novoNo;
+}
+
+TLista* criarLista() {
+    TLista* novaLista = (TLista*)malloc(sizeof(TLista));
+    novaLista->inicio = NULL;
+    return novaLista;
+}
+
+void inserirNo(TLista* lista, int valor) {
+    TNo* novoNo = criarNo(valor);
+
+    if (lista->inicio == NULL) {
+        lista->inicio = novoNo;
+    } else {
+        TNo* noAtual = lista->inicio;
+        while (noAtual->prox != NULL) {
+            noAtual = noAtual->prox;
+        }
+        noAtual->prox = novoNo;
+    }
+}
+
+void dividirLista(TLista* listaOriginal, int n, TLista** listaMenor, TLista** listaMaior) {
+    *listaMenor = criarLista();
+    *listaMaior = criarLista();
+
+    TNo* noAtual = listaOriginal->inicio;
+    while (noAtual != NULL) {
+        if (noAtual->dado < n) {
+            inserirNo(*listaMenor, noAtual->dado);
+        } else {
+            inserirNo(*listaMaior, noAtual->dado);
+        }
+        noAtual = noAtual->prox;
+    }
+}
+
+void imprimirLista(TLista* lista) {
+    TNo* noAtual = lista->inicio;
+    while (noAtual != NULL) {
+        printf("%d ", noAtual->dado);
+        noAtual = noAtual->prox;
+    }
+    printf("\n");
+}
+
+void liberarLista(TLista* lista) {
+    TNo* noAtual = lista->inicio;
+    while (noAtual != NULL) {
+        TNo* temp = noAtual;
+        noAtual = noAtual->prox;
+        free(temp);
+    }
+    free(lista);
+}
+
+int main() {
+    TLista* listaOriginal = criarLista();
+    TLista* listaMenor;
+    TLista* listaMaior;
+    int n;
+    int valor;
+
+    printf("Digite o número de elementos da lista: ");
+    scanf("%d", &n);
+
+    printf("Digite os elementos da lista:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &valor);
+        inserirNo(listaOriginal, valor);
+    }
+
+    printf("Digite o valor de referência: ");
+    scanf("%d", &valor);
+
+    dividirLista(listaOriginal, valor, &listaMenor, &listaMaior);
+
+    printf("Lista original: ");
+    imprimirLista(listaOriginal);
+
+    printf("Lista L1 (elementos menores que %d): ", valor);
+    imprimirLista(listaMenor);
+
+    printf("Lista L2 (elementos maiores ou iguais a %d): ", valor);
+    imprimirLista(listaMaior);
+
+    liberarLista(listaOriginal);
+    liberarLista(listaMenor);
+    liberarLista(listaMaior);
+
+    return 0;
+}
