@@ -32,3 +32,36 @@ int main() {
 
     return 0;
 }
+#include <stdio.h>
+
+int inverterAlgarismos(int num, int *posicao) {
+    if (num < 10) {
+        *posicao *= 10;
+        return num;
+    }
+
+    int ultimoDigito = num % 10;
+    int novoNum = inverterAlgarismos(num / 10, posicao);
+
+    *posicao *= 10;
+
+    return (ultimoDigito * (*posicao)) + novoNum;
+}
+
+int inverterNumero(int num) {
+    int posicao = 1;
+    return inverterAlgarismos(num, &posicao);
+}
+
+int main() {
+    int numero1;
+
+    printf("Digite um número inteiro: ");
+    scanf("%d", &numero1);
+
+    int resultado = inverterNumero(numero1);
+
+    printf("O número com os algarismos invertidos é: %d\n", resultado);
+
+    return 0;
+}
