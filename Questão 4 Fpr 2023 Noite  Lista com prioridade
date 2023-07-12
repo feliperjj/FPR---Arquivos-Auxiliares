@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TAM 5 // Número de filas de prioridade
+
+typedef struct No {
+    int dado;
+    struct No* prox;
+} TNo;
+
+typedef struct Fila {
+    TNo* inicio;
+} TFila;
+
+TNo* criarNo(int valor) {
+    TNo* novoNo = (TNo*)malloc(sizeof(TNo));
+    novoNo->dado = valor;
+    novoNo->prox = NULL;
+    return novoNo;
+}
+
+TFila* criarFila() {
+    TFila* novaFila = (TFila*)malloc(sizeof(TFila));
+    novaFila->inicio = NULL;
+    return novaFila;
+}
+
+void inserirNo(TFila* fila, int valor) {
+    TNo* novoNo = criarNo(valor);
+
+    if (fila->inicio == NULL) {
+        fila->inicio = novoNo;
+    } else {
+        TNo* noAtual = fila->inicio;
+        while (noAtual->prox != NULL) {
+            noAtual = noAtual->prox;
+        }
+        noAtual->prox = novoNo;
+    }
+}
+
+int removerNo(TFila* fila) {
+    if (fila->inicio == NULL) {
+        printf("A fila está vazia.\n");
+        return -1;
+    }
+
+    TNo* primeiroNo = fila->inicio;
+    int dado = primeiroNo->dado;
+    fila->inicio = primeiroNo->prox;
+    free(primeiroNo);
+    return dado;
+}
+
+void enfileirar(TFila* filasPrioridades[], int valor, int prioridade) {
+    if (prioridade < 0 || prioridade >= TAM) {
+        printf("A prioridade informada é inválida.\n");
+        return;
+    }
+
+    inserirNo(filasPrioridades[prioridade], valor);
+}
+
+int desenfileirar(TFila* filasPrioridades[]) {
+    int i;
+
+    for (i = 0; i < TAM; i++) {
+        if (filasPrioridades[i]->inicio != NULL) {
+            return removerNo(filasPrioridades[i]);
+        }
+    }
+
+    printf("Todas as filas estão vazias.\n");
+    return -1;
+}
+
+void imprimirFilas(TFila* filasPrioridades[]) {
+    int i;
+
+    for (i = 0; i < TAM; i++) {
+        printf("Fila %d: ", i);
+        TNo* noAtual = filasPrioridades[i]->inicio;
+        while (noAtual != NULL) {
+            printf("%d ", noAtual->dado);
+            noAtual = noAtual->prox;
+        }
+        printf("\n");
+    }
+}
+
+void liberarFilas(TFila* filasPrioridades[]) {
+    int i;
+
+    for (i = 0; i < TAM; i++) {
+        TNo* noAtual = filasPrioridades[i]->inicio;
+        while (noAtual != NULL) {
+            TNo* temp = noAtual;
+            noAtual = noAtual->prox;
+            free(temp);
+        }
+        free(filasPrioridades[i]);
+    }
+}
+
+int main() {
+    TFila* filasPrioridades[TAM];
+    int i;
+
+    // Inicializar as filas de prioridades
+    for (i = 0; i < TAM; i++) {
+        filasPrioridades[i] = criarFila();
+    }
+
+    int valor, prioridade;
+
+    // Enfileirar elementos manualmente
+    printf("Enfileirar elementos (digite -1 para parar):\n");
+    while (1) {
+        printf("Digite o valor: ");
+        scanf("%d", &valor);
+        
+        if (valor == -1) {
+            break;
+        }
+        
+        printf("Digite a prioridade (0 a %d): ", TAM - 1);
+        scanf("%d", &prioridade);
+
+        enfileirar(filasPrioridades, valor, prioridade);
+    }
+
+    printf("Filas com prioridades:\n");
+    imprimirFilas(filasPrioridades);
+
+    printf("Removendo elementos:\n");
+    while (1) {
+        int elemento = desenfileirar(filasPrioridades);
+        if (elemento == -1) {
+            break;
+        }
+        printf("Elemento removido: %d\n", elemento);
+    }
+
+    liberarFilas(filasPrioridades);
+
+    return 0;
+}
