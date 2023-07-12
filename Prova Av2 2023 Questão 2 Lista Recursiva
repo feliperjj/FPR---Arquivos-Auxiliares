@@ -1,3 +1,5 @@
+Implementar uma função recursiva que, dada uma lista encadeada L, do tipo TLista, e um número inteiro n, remova de L
+todos os valores maiores do que n.
 
 #include <stdio.h>
 #include <stdlib.h>
