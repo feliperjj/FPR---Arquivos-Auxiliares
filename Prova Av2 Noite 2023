@@ -1,3 +1,10 @@
+Desenvolver uma função recursiva que, dado um número inteiro n1, “crie” um novo número inteiro, n2, consistindo no
+primeiro com os algarismos invertidos.
+Exemplos:
+n1 = 4258 n2 será igual a 8524
+n2 = 12625 n2 será igual a 52621
+
+
 #include <stdio.h>
 
 int mdc(int a, int b) {
