@@ -1,21 +1,12 @@
-//Exemplos:
-//n1 = 4258 n2 será igual a 8524
-//n2 = 12625 n2 será igual a 52621
-
-#include <stdio.h>
-
 #include <stdio.h>
 
 int inverterAlgarismos(int num, int *posicao) {
-    int ultimoDigito,novoNum;
-	
-	if (num < 10) {
-        *posicao *= 10;
-        return num;
+    if (num < 10) {
+        return (num * (*posicao));
     }
 
-     ultimoDigito = num % 10;
-     novoNum = inverterAlgarismos(num / 10, posicao);
+    int ultimoDigito = num % 10;
+    int novoNum = inverterAlgarismos(num / 10, posicao);
 
     *posicao *= 10;
 
@@ -23,19 +14,17 @@ int inverterAlgarismos(int num, int *posicao) {
 }
 
 int inverterNumero(int num) {
-    int posicao;
-	
-	posicao = 1;
+    int posicao = 1;
     return inverterAlgarismos(num, &posicao);
 }
 
 int main() {
-    int numero1,resultado;
+    int numero1;
 
     printf("Digite um número inteiro: ");
     scanf("%d", &numero1);
 
-     resultado = inverterNumero(numero1);
+    int resultado = inverterNumero(numero1);
 
     printf("O número com os algarismos invertidos é: %d\n", resultado);
 
