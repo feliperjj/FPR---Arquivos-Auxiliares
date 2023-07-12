@@ -1,1 +1,127 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No {
+    int dado;
+    struct No* prox;
+} TNo;
+
+typedef struct Lista {
+    TNo* inicio;
+} TLista;
+
+TNo* criarNo(int valor) {
+    TNo* novoNo = (TNo*)malloc(sizeof(TNo));
+    novoNo->dado = valor;
+    novoNo->prox = NULL;
+    return novoNo;
+}
+
+TLista* criarLista() {
+    TLista* novaLista = (TLista*)malloc(sizeof(TLista));
+    novaLista->inicio = NULL;
+    return novaLista;
+}
+
+void inserirNo(TLista* lista, int valor) {
+    TNo* novoNo = criarNo(valor);
+
+    if (lista->inicio == NULL) {
+        lista->inicio = novoNo;
+    } else {
+        TNo* noAtual = lista->inicio;
+        while (noAtual->prox != NULL) {
+            noAtual = noAtual->prox;
+        }
+        noAtual->prox = novoNo;
+    }
+}
+
+int removerNoRecursivo(TNo** refInicio, int posicao) {
+    if (*refInicio == NULL) {
+        return 0;
+    }
+
+    if (posicao == 1) {
+        TNo* temp = *refInicio;
+        *refInicio = (*refInicio)->prox;
+        free(temp);
+        return 1;
+    }
+
+    TNo* noAnterior = *refInicio;
+    TNo* noAtual = (*refInicio)->prox;
+    int posicaoAtual = 2;
+
+    while (noAtual != NULL && posicaoAtual < posicao) {
+        noAnterior = noAtual;
+        noAtual = noAtual->prox;
+        posicaoAtual++;
+    }
+
+    if (noAtual != NULL) {
+        noAnterior->prox = noAtual->prox;
+        free(noAtual);
+        return 1;
+    }
+
+    return 0;
+}
+
+void imprimirLista(TLista* lista) {
+    TNo* noAtual = lista->inicio;
+    while (noAtual != NULL) {
+        printf("%d ", noAtual->dado);
+        noAtual = noAtual->prox;
+    }
+    printf("\n");
+}
+
+void liberarLista(TLista* lista) {
+    TNo* noAtual = lista->inicio;
+    while (noAtual != NULL) {
+        TNo* temp = noAtual;
+        noAtual = noAtual->prox;
+        free(temp);
+    }
+    free(lista);
+}
+
+int main() {
+    TLista* minhaLista = criarLista();
+    int valor;
+    int posicao;
+
+    printf("Digite os números para a lista (digite -1 para parar):\n");
+    while (1) {
+        printf("Digite um número: ");
+        scanf("%d", &valor);
+
+        if (valor == -1) {
+            break;
+        }
+
+        inserirNo(minhaLista, valor);
+    }
+
+    printf("Lista original: ");
+    imprimirLista(minhaLista);
+
+    printf("Digite a posição do nó a ser removido: ");
+    scanf("%d", &posicao);
+
+    int resultado = removerNoRecursivo(&(minhaLista->inicio), posicao);
+
+    if (resultado == 1) {
+        printf("Nó removido da posição %d\n", posicao);
+        printf("Lista atualizada: ");
+        imprimirLista(minhaLista);
+    } else {
+        printf("Posição inválida\n");
+    }
+
+    liberarLista(minhaLista);
+
+    return 0;
+}
