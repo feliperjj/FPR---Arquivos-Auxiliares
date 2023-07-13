@@ -27,6 +27,8 @@ void main()
     // declaração de variáveis
     TLista P1 = NULL; // representando a pilha P1 inicialmente vazia
     TLista P2 = NULL; // representando a pilha P2 inicialmente vazia
+    TLista P1Aux = NULL; // cópia de P1 para não destruir a pilha original
+    TLista P2Aux = NULL; // cópia de P2 para não destruir a pilha original
     int numero, op;
 
     do
@@ -73,8 +75,12 @@ void main()
 
         // Contar elementos comuns entre P1 e P2
         case 3:
+            // criando cópias das pilhas P1 e P2
+            P1Aux = P1;
+            P2Aux = P2;
+
             // chamando a função
-            int count = contarElementosComuns(P1, P2);
+            int count = contarElementosComuns(P1Aux, P2Aux);
             printf("\nQuantidade de elementos comuns entre P1 e P2: %d\n", count);
             break;
 
