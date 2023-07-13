@@ -210,3 +210,91 @@ int main() {
 
     return 0;
 }
+
+
+Aaaaaa
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No {
+    int dado;
+    struct No* prox;
+} TNo;
+
+typedef struct Lista {
+    TNo* inicio;
+} TLista;
+
+TNo* criarNo(int valor) {
+    TNo* novoNo = (TNo*)malloc(sizeof(TNo));
+    novoNo->dado = valor;
+    novoNo->prox = NULL;
+    return novoNo;
+}
+
+TLista* criarLista() {
+    TLista* novaLista = (TLista*)malloc(sizeof(TLista));
+    novaLista->inicio = NULL;
+    return novaLista;
+}
+
+void inserirNo(TLista* lista, int valor) {
+    TNo* novoNo = criarNo(valor);
+
+    if (lista->inicio == NULL) {
+        lista->inicio = novoNo;
+    } else {
+        TNo* noAtual = lista->inicio;
+        while (noAtual->prox != NULL) {
+            noAtual = noAtual->prox;
+        }
+        noAtual->prox = novoNo;
+    }
+}
+
+int verificarOrdenacao(TLista* lista, int n) {
+    TNo* noAtual = lista->inicio;
+    int todosMenoresOuIguais = 1;
+
+    while (noAtual != NULL) {
+        if (noAtual->dado > n) {
+            todosMenoresOuIguais = 0;
+            break;
+        }
+        noAtual = noAtual->prox;
+    }
+
+    return todosMenoresOuIguais;
+}
+
+void liberarLista(TLista* lista) {
+    TNo* noAtual = lista->inicio;
+    while (noAtual != NULL) {
+        TNo* temp = noAtual;
+        noAtual = noAtual->prox;
+        free(temp);
+    }
+    free(lista);
+}
+
+int main() {
+    TLista* listaOriginal = criarLista();
+
+    inserirNo(listaOriginal, 2);
+    inserirNo(listaOriginal, 4);
+    inserirNo(listaOriginal, 6);
+    inserirNo(listaOriginal, 8);
+    inserirNo(listaOriginal, 10);
+
+    int valorReferencia = 15;
+    int ordenado = verificarOrdenacao(listaOriginal, valorReferencia);
+
+    liberarLista(listaOriginal);
+
+    printf("Ordenado: %d\n", ordenado);
+
+    return 0;
+}
+
