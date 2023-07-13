@@ -1,11 +1,3 @@
-//Questão 03 [2,5 pontos]:
-//Implementar uma função que, dada uma lista encadeada L, do tipo TLista, e um número inteiro n, determine se todos
-//os valores inferiores ou maiores do que n estão nos primeiros nós de L, assim como os maiores ao final da lista.
-//
-//Notas: caso todos os valores da lista sejam menores ou iguais a n, a função deverá retornar 1; o mesmo aplica-
-//se quando todos os elementos forem maiores do que n.
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -45,18 +37,29 @@ void inserirNo(TLista* lista, int valor) {
     }
 }
 
-void dividirLista(TLista* listaOriginal, int n, TLista** listaMenor, TLista** listaMaior) {
+int dividirLista(TLista* listaOriginal, int n, TLista** listaMenor, TLista** listaMaior) {
     *listaMenor = criarLista();
     *listaMaior = criarLista();
 
     TNo* noAtual = listaOriginal->inicio;
+    int todosMenores = 1;
+    int todosMaiores = 1;
+
     while (noAtual != NULL) {
         if (noAtual->dado < n) {
             inserirNo(*listaMenor, noAtual->dado);
+            todosMaiores = 0;
         } else {
             inserirNo(*listaMaior, noAtual->dado);
+            todosMenores = 0;
         }
         noAtual = noAtual->prox;
+    }
+
+    if (todosMenores || todosMaiores) {
+        return 1;
+    } else {
+        return 0;
     }
 }
 
@@ -99,20 +102,26 @@ int main() {
     printf("Digite o valor de referência: ");
     scanf("%d", &valor);
 
-    dividirLista(listaOriginal, valor, &listaMenor, &listaMaior);
+    int todosMenoresOuIguais = dividirLista(listaOriginal, valor, &listaMenor, &listaMaior);
 
     printf("Lista original: ");
     imprimirLista(listaOriginal);
 
-    printf("Lista L1 (elementos menores que %d): ", valor);
+    printf("Lista L1 (elementos menores ou iguais a %d): ", valor);
     imprimirLista(listaMenor);
 
-    printf("Lista L2 (elementos maiores ou iguais a %d): ", valor);
+    printf("Lista L2 (elementos maiores que %d): ", valor);
     imprimirLista(listaMaior);
 
     liberarLista(listaOriginal);
     liberarLista(listaMenor);
     liberarLista(listaMaior);
+
+    if (todosMenoresOuIguais) {
+        printf("Todos os valores são menores ou iguais a %d.\n", valor);
+    } else {
+        printf("Existem valores maiores que %d.\n", valor);
+    }
 
     return 0;
 }
