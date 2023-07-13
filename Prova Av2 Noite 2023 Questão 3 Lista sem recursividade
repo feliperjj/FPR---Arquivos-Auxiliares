@@ -298,3 +298,20 @@ int main() {
     return 0;
 }
 
+
+
+
+int verificarOrdenacao(TLista* lista, int n) {
+    TNo* noAtual = lista->inicio;
+
+    while (noAtual != NULL) {
+        if (noAtual->dado > n) {
+            return 0;  // Encontrou um valor maior, retorna 0
+        }
+        noAtual = noAtual->prox;
+    }
+
+    return 1;  // Todos os valores são menores ou iguais, retorna 1
+}
+
+
