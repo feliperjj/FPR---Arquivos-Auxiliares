@@ -79,26 +79,21 @@ void liberarLista(TLista* lista) {
 
 int main() {
     TLista* listaOriginal = criarLista();
-    int n;
     int valor;
 
-    printf("Digite o número de elementos da lista: ");
-    scanf("%d", &n);
+    // Insere valores fixos na lista
+    inserirNo(listaOriginal, 5);
+    inserirNo(listaOriginal, 8);
+    inserirNo(listaOriginal, 10);
+    inserirNo(listaOriginal, 12);
 
-    printf("Digite os elementos da lista:\n");
-    for (int i = 0; i < n; i++) {
-        printf("Elemento %d: ", i + 1);
-        scanf("%d", &valor);
-        inserirNo(listaOriginal, valor);
-    }
+    printf("Lista original: ");
+    imprimirLista(listaOriginal);
 
     printf("Digite o valor de referência: ");
     scanf("%d", &valor);
 
     int ordenado = verificarOrdenacao(listaOriginal, valor);
-
-    printf("Lista original: ");
-    imprimirLista(listaOriginal);
 
     liberarLista(listaOriginal);
 
