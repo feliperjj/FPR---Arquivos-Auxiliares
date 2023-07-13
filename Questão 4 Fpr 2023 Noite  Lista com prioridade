@@ -215,3 +215,478 @@ int menu()
 //2. Caso alguma estrutura auxiliar seja necessária, esta será obrigatoriamente uma pilha ou uma fila;
 //3. A solução apresentada deve respeitar as regras de manipulação de pilhas e/ou filas, em sua versão
 //clássica.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// definição de constantes
+#define TRUE 1
+#define FALSE 0
+
+// definição de tipos
+typedef struct No {
+    int valor;
+    struct No* prox;
+} TNo;
+
+typedef TNo* TLista;
+
+// protótipos das funções
+int empilhar(TLista* P, int numero);
+int desempilhar(TLista* P, int* numero);
+int topo(TLista P, int* t);
+int contarElementosComuns(TLista P1, TLista P2);
+
+int menu();
+
+// main
+void main()
+{
+    // declaração de variáveis
+    TLista P1 = NULL; // representando a pilha P1 inicialmente vazia
+    TLista P2 = NULL; // representando a pilha P2 inicialmente vazia
+    TLista auxP1 = NULL; // pilha auxiliar para preservar P1
+    TLista auxP2 = NULL; // pilha auxiliar para preservar P2
+    int numero, op;
+
+    do
+    {
+        system("CLS"); // limpar tela
+
+        // exibindo o menu ao usuário
+        op = menu();
+
+        // verificando a opção escolhida
+        switch (op)
+        {
+        // Empilhar na pilha P1
+        case 1:
+            printf("\nEntre com o valor a ser empilhado na pilha P1: ");
+            scanf("%d", &numero);
+
+            // chamando a função
+            if (empilhar(&P1, numero) == TRUE)
+            {
+                printf("\n\tInsercao realizada com sucesso na pilha P1!\n");
+            }
+            else
+            {
+                printf("\n\tERRO: insercao nao realizada na pilha P1!\n");
+            }
+            break;
+
+        // Empilhar na pilha P2
+        case 2:
+            printf("\nEntre com o valor a ser empilhado na pilha P2: ");
+            scanf("%d", &numero);
+
+            // chamando a função
+            if (empilhar(&P2, numero) == TRUE)
+            {
+                printf("\n\tInsercao realizada com sucesso na pilha P2!\n");
+            }
+            else
+            {
+                printf("\n\tERRO: insercao nao realizada na pilha P2!\n");
+            }
+            break;
+
+        // Contar elementos comuns entre P1 e P2
+        case 3:
+            // criando cópias das pilhas P1 e P2
+            auxP1 = P1;
+            auxP2 = P2;
+
+            // chamando a função
+            int count = contarElementosComuns(auxP1, auxP2);
+            printf("\nQuantidade de elementos comuns entre P1 e P2: %d\n", count);
+            break;
+
+        // Saída
+        case 4:
+            printf("\n\nPrograma finalizado!");
+            break;
+
+        default:
+            printf("\n\nOpcao invalida! Tente novamente.");
+        }
+
+        system("PAUSE");
+    } while (op != 4);
+}
+
+// implementação das funções
+
+// inserindo no início da lista
+int empilhar(TLista* P, int numero)
+{
+    // declaração de variáveis
+    TLista aux;
+
+    // Passo 1: alocar memória para o novo valor
+    aux = malloc(sizeof(TNo));
+
+    // verificar se a memória foi alocada
+    if (!aux)
+    {
+        return FALSE;
+    }
+    else
+    {
+        // Passo 2: inserir o novo valor no campo 'valor' da memória recém-alocada
+        aux->valor = numero;
+
+        // Passo 3: fazer com que o campo 'prox' da memória recém-alocada
+        // aponte para o "antigo" topo da pilha
+        aux->prox = *P;
+
+        // Passo 4: Faz a pilha apontar para o novo nó
+        *P = aux;
+
+        return TRUE;
+    }
+}
+
+int desempilhar(TLista* P, int* numero)
+{
+    // declaração de variáveis
+    TLista aux;
+
+    // verificando se a pilha está vazia
+    if (!(*P))
+    {
+        return FALSE;
+    }
+    else
+    {
+        aux = *P;
+        *P = aux->prox; // ou *P = (*P)->prox;
+
+        // salvando em 'numero' o valor que estava no topo
+        *numero = aux->valor;
+
+        free(aux);
+
+        return TRUE;
+    }
+}
+
+int topo(TLista P, int* t)
+{
+    // verificando se a pilha está vazia
+    if (!P)
+    {
+        return FALSE;
+    }
+    else
+    {
+        *t = P->valor;
+
+        return TRUE;
+    }
+}
+
+int contarElementosComuns(TLista P1, TLista P2)
+{
+    int count = 0;
+    TLista auxP1 = NULL;
+    TLista auxP2 = NULL;
+
+    // Pilhas auxiliares para preservar P1 e P2
+    auxP1 = P1;
+    auxP2 = P2;
+
+    // Pilhas auxiliares para armazenar elementos comuns
+    TLista pilhaAuxComum1 = NULL;
+    TLista pilhaAuxComum2 = NULL;
+
+    // Verificando os elementos comuns e empilhando-os nas pilhas auxiliares
+    while (auxP1 != NULL)
+    {
+        int numero;
+        desempilhar(&auxP1, &numero);
+
+        while (auxP2 != NULL)
+        {
+            int numero2;
+            desempilhar(&auxP2, &numero2);
+
+            if (numero == numero2)
+            {
+                empilhar(&pilhaAuxComum1, numero);
+                empilhar(&pilhaAuxComum2, numero2);
+                count++;
+            }
+        }
+
+        // Restaurando a pilha P2
+        auxP2 = P2;
+    }
+
+    // Restaurando as pilhas P1 e P2
+    auxP1 = P1;
+    auxP2 = P2;
+
+    // Restaurando as pilhas originais P1 e P2
+    while (pilhaAuxComum1 != NULL)
+    {
+        int numero;
+        desempilhar(&pilhaAuxComum1, &numero);
+        empilhar(&auxP1, numero);
+    }
+
+    while (pilhaAuxComum2 != NULL)
+    {
+        int numero;
+        desempilhar(&pilhaAuxComum2, &numero);
+        empilhar(&auxP2, numero);
+    }
+
+    return count;
+}
+
+int menu()
+{
+    // declara
+
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// definição de constantes
+#define TRUE 1
+#define FALSE 0
+
+// definição de tipos
+typedef struct No {
+    int valor;
+    struct No* prox;
+} TNo;
+
+typedef TNo* TLista;
+
+// protótipos das funções
+int empilhar(TLista* P, int numero);
+int desempilhar(TLista* P, int* numero);
+int topo(TLista P, int* t);
+int contarElementosComuns(TLista P1, TLista P2);
+
+int menu();
+
+// main
+void main()
+{
+    // declaração de variáveis
+    TLista P1 = NULL; // representando a pilha P1 inicialmente vazia
+    TLista P2 = NULL; // representando a pilha P2 inicialmente vazia
+    TLista P1Aux = NULL; // pilha auxiliar para preservar P1
+    TLista P2Aux = NULL; // pilha auxiliar para preservar P2
+    int numero, op;
+
+    do
+    {
+        system("CLS"); // limpar tela
+
+        // exibindo o menu ao usuário
+        op = menu();
+
+        // verificando a opção escolhida
+        switch (op)
+        {
+        // Empilhar na pilha P1
+        case 1:
+            printf("\nEntre com o valor a ser empilhado na pilha P1: ");
+            scanf("%d", &numero);
+
+            // chamando a função
+            if (empilhar(&P1, numero) == TRUE)
+            {
+                printf("\n\tInsercao realizada com sucesso na pilha P1!\n");
+            }
+            else
+            {
+                printf("\n\tERRO: insercao nao realizada na pilha P1!\n");
+            }
+            break;
+
+        // Empilhar na pilha P2
+        case 2:
+            printf("\nEntre com o valor a ser empilhado na pilha P2: ");
+            scanf("%d", &numero);
+
+            // chamando a função
+            if (empilhar(&P2, numero) == TRUE)
+            {
+                printf("\n\tInsercao realizada com sucesso na pilha P2!\n");
+            }
+            else
+            {
+                printf("\n\tERRO: insercao nao realizada na pilha P2!\n");
+            }
+            break;
+
+        // Contar elementos comuns entre P1 e P2
+        case 3:
+            // criando cópias das pilhas P1 e P2
+            P1Aux = P1;
+            P2Aux = P2;
+
+            // chamando a função
+            int count = contarElementosComuns(P1Aux, P2Aux);
+            printf("\nQuantidade de elementos comuns entre P1 e P2: %d\n", count);
+            break;
+
+        // Saída
+        case 4:
+            printf("\n\nPrograma finalizado!");
+            break;
+
+        default:
+            printf("\n\nOpcao invalida! Tente novamente.");
+        }
+
+        system("PAUSE");
+    } while (op != 4);
+}
+
+// implementação das funções
+
+// inserindo no início da lista
+int empilhar(TLista* P, int numero)
+{
+    // declaração de variáveis
+    TLista aux;
+
+    // Passo 1: alocar memória para o novo valor
+    aux = malloc(sizeof(TNo));
+
+    // verificar se a memória foi alocada
+    if (!aux)
+    {
+        return FALSE;
+    }
+    else
+    {
+        // Passo 2: inserir o novo valor no campo 'valor' da memória recém-alocada
+        aux->valor = numero;
+
+        // Passo 3: fazer com que o campo 'prox' da memória recém-alocada
+        // aponte para o "antigo" topo da pilha
+        aux->prox = *P;
+
+        // Passo 4: Faz a pilha apontar para o novo nó
+        *P = aux;
+
+        return TRUE;
+    }
+}
+
+int desempilhar(TLista* P, int* numero)
+{
+    // declaração de variáveis
+    TLista aux;
+
+    // verificando se a pilha está vazia
+    if (!(*P))
+    {
+        return FALSE;
+    }
+    else
+    {
+        aux = *P;
+        *P = aux->prox; // ou *P = (*P)->prox;
+
+        // salvando em 'numero' o valor que estava no topo
+        *numero = aux->valor;
+
+        free(aux);
+
+        return TRUE;
+    }
+}
+
+int topo(TLista P, int* t)
+{
+    // verificando se a pilha está vazia
+    if (!P)
+    {
+        return FALSE;
+    }
+    else
+    {
+        *t = P->valor;
+
+        return TRUE;
+    }
+}
+
+int contarElementosComuns(TLista P1, TLista P2)
+{
+    int count = 0;
+    TLista P1Aux = NULL;
+    TLista P2Aux = NULL;
+
+    // Pilhas auxiliares para preservar P1 e P2
+    P1Aux = P1;
+    P2Aux = P2;
+
+    // Pilhas auxiliares para armazenar elementos comuns
+    TLista pilhaAuxComum1 = NULL;
+    TLista pilhaAuxComum2 = NULL;
+
+    // Verificando os elementos comuns e empilhando-os nas pilhas auxiliares
+    while (P1Aux != NULL)
+    {
+        int numero;
+        desempilhar(&P1Aux, &numero);
+
+        while (P2Aux != NULL)
+        {
+            int numero2;
+            desempilhar(&P2Aux, &numero2);
+
+            if (numero == numero2)
+            {
+                count++;
+                empilhar(&pilhaAuxComum1, numero);
+                empilhar(&pilhaAuxComum2, numero2);
+            }
+
+            empilhar(&P2, numero2); // Restaurando os elementos em P2
+        }
+
+        empilhar(&P1, numero); // Restaurando os elementos em P1
+
+        P2Aux = P2; // Restaurando P2
+    }
+
+    // Restaurando as pilhas originais P1 e P2
+    while (pilhaAuxComum1 != NULL)
+    {
+        int numero;
+        desempilhar(&pilhaAuxComum1, &numero);
+        empilhar(&P1, numero);
+    }
+
+    while (pilhaAuxComum2 != NULL)
+    {
+        int numero;
+        desempilhar(&pilhaAuxComum2, &numero);
+        empilhar(&P2, numero);
+    }
+
+    return count;
+}
+
+int menu()
+{
+    // declaração de variáveis
+    int opcao;
+
+    // exib
+
