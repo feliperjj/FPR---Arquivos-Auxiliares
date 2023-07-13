@@ -1,3 +1,11 @@
+//Questão 03 [2,5 pontos]:
+//Implementar uma função que, dada uma lista encadeada L, do tipo TLista, e um número inteiro n, determine se todos
+//os valores inferiores ou maiores do que n estão nos primeiros nós de L, assim como os maiores ao final da lista.
+//
+//Notas: caso todos os valores da lista sejam menores ou iguais a n, a função deverá retornar 1; o mesmo aplica-
+//se quando todos os elementos forem maiores do que n.
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
