@@ -105,3 +105,108 @@ int main() {
 
     return 0;
 }
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct No {
+    int dado;
+    struct No* prox;
+} TNo;
+
+typedef struct Lista {
+    TNo* inicio;
+} TLista;
+
+TNo* criarNo(int valor) {
+    TNo* novoNo = (TNo*)malloc(sizeof(TNo));
+    novoNo->dado = valor;
+    novoNo->prox = NULL;
+    return novoNo;
+}
+
+TLista* criarLista() {
+    TLista* novaLista = (TLista*)malloc(sizeof(TLista));
+    novaLista->inicio = NULL;
+    return novaLista;
+}
+
+void inserirNo(TLista* lista, int valor) {
+    TNo* novoNo = criarNo(valor);
+
+    if (lista->inicio == NULL) {
+        lista->inicio = novoNo;
+    } else {
+        TNo* noAtual = lista->inicio;
+        while (noAtual->prox != NULL) {
+            noAtual = noAtual->prox;
+        }
+        noAtual->prox = novoNo;
+    }
+}
+
+int verificarOrdenacao(TLista* lista, int n) {
+    TNo* noAtual = lista->inicio;
+    int todosMenoresOuIguais = 1;
+    int todosMaioresOuIguais = 1;
+
+    while (noAtual != NULL) {
+        if (noAtual->dado > n) {
+            todosMenoresOuIguais = 0;
+        } else {
+            todosMaioresOuIguais = 0;
+        }
+        noAtual = noAtual->prox;
+    }
+
+    if (todosMenoresOuIguais || todosMaioresOuIguais) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void imprimirLista(TLista* lista) {
+    TNo* noAtual = lista->inicio;
+    while (noAtual != NULL) {
+        printf("%d ", noAtual->dado);
+        noAtual = noAtual->prox;
+    }
+    printf("\n");
+}
+
+void liberarLista(TLista* lista) {
+    TNo* noAtual = lista->inicio;
+    while (noAtual != NULL) {
+        TNo* temp = noAtual;
+        noAtual = noAtual->prox;
+        free(temp);
+    }
+    free(lista);
+}
+
+int main() {
+    TLista* listaOriginal = criarLista();
+    int valor;
+
+    inserirNo(listaOriginal, 2);
+    inserirNo(listaOriginal, 4);
+    inserirNo(listaOriginal, 6);
+    inserirNo(listaOriginal, 8);
+    inserirNo(listaOriginal, 10);
+
+    printf("Lista original: ");
+    imprimirLista(listaOriginal);
+
+    int valorReferencia = 15;
+    int ordenado = verificarOrdenacao(listaOriginal, valorReferencia);
+
+    liberarLista(listaOriginal);
+
+    if (ordenado) {
+        printf("Todos os valores estão nos primeiros nós ou no final da lista.\n");
+    } else {
+        printf("Existem valores no meio da lista.\n");
+    }
+
+    return 0;
+}
