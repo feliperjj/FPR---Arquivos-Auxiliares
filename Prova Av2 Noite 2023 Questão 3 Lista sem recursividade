@@ -37,26 +37,21 @@ void inserirNo(TLista* lista, int valor) {
     }
 }
 
-int dividirLista(TLista* listaOriginal, int n, TLista** listaMenor, TLista** listaMaior) {
-    *listaMenor = criarLista();
-    *listaMaior = criarLista();
-
-    TNo* noAtual = listaOriginal->inicio;
-    int todosMenores = 1;
-    int todosMaiores = 1;
+int verificarOrdenacao(TLista* lista, int n) {
+    TNo* noAtual = lista->inicio;
+    int todosMenoresOuIguais = 1;
+    int todosMaioresOuIguais = 1;
 
     while (noAtual != NULL) {
-        if (noAtual->dado < n) {
-            inserirNo(*listaMenor, noAtual->dado);
-            todosMaiores = 0;
+        if (noAtual->dado > n) {
+            todosMenoresOuIguais = 0;
         } else {
-            inserirNo(*listaMaior, noAtual->dado);
-            todosMenores = 0;
+            todosMaioresOuIguais = 0;
         }
         noAtual = noAtual->prox;
     }
 
-    if (todosMenores || todosMaiores) {
+    if (todosMenoresOuIguais || todosMaioresOuIguais) {
         return 1;
     } else {
         return 0;
@@ -84,8 +79,6 @@ void liberarLista(TLista* lista) {
 
 int main() {
     TLista* listaOriginal = criarLista();
-    TLista* listaMenor;
-    TLista* listaMaior;
     int n;
     int valor;
 
@@ -102,25 +95,17 @@ int main() {
     printf("Digite o valor de referência: ");
     scanf("%d", &valor);
 
-    int todosMenoresOuIguais = dividirLista(listaOriginal, valor, &listaMenor, &listaMaior);
+    int ordenado = verificarOrdenacao(listaOriginal, valor);
 
     printf("Lista original: ");
     imprimirLista(listaOriginal);
 
-    printf("Lista L1 (elementos menores ou iguais a %d): ", valor);
-    imprimirLista(listaMenor);
-
-    printf("Lista L2 (elementos maiores que %d): ", valor);
-    imprimirLista(listaMaior);
-
     liberarLista(listaOriginal);
-    liberarLista(listaMenor);
-    liberarLista(listaMaior);
 
-    if (todosMenoresOuIguais) {
-        printf("Todos os valores são menores ou iguais a %d.\n", valor);
+    if (ordenado) {
+        printf("Todos os valores estão nos primeiros nós ou no final da lista.\n");
     } else {
-        printf("Existem valores maiores que %d.\n", valor);
+        printf("Existem valores no meio da lista.\n");
     }
 
     return 0;
