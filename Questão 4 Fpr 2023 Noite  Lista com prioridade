@@ -210,3 +210,8 @@ int menu()
     // retornando a opção escolhida
     return opcao;
 }
+//1. Caso determinado valor apareça mais de uma vez em P1, a solução final poderá contá-lo tantas vezes
+//quantas forem as suas ocorrências;
+//2. Caso alguma estrutura auxiliar seja necessária, esta será obrigatoriamente uma pilha ou uma fila;
+//3. A solução apresentada deve respeitar as regras de manipulação de pilhas e/ou filas, em sua versão
+//clássica.
